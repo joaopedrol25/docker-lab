@@ -69,4 +69,16 @@ docker --version
 docker compose version
 ```
 
-Com o docker e docker compose instalados, vamos dar continuidade para o nosso primeiro serviço.
+Com o docker e docker compose instalados, vamos dar continuidade ao nosso projeto.
+
+## 🛠️ Prática: Subindo seu primeiro serviço
+
+Agora que você já entende a teoria, vamos colocar a mão na massa. Preparei um laboratório prático isolado para você aprender a subir um servidor Web.
+
+👉 **[Clique aqui para acessar o Laboratório Nginx](./nginx-service/README.md)**
+
+Neste sub-diretório você encontrará:
+* O arquivo `docker-compose.yml` comentado.
+* O arquivo `index.html` para teste.
+* Um guia passo a passo de execução.
+
