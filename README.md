@@ -1,12 +1,12 @@
 
-<h1 align="center"> 🐳 Docker Lab para Iniciantes </h1>
+<h1 align="center">  Docker para Iniciantes </h1>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker Badge">
   <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux Badge">
 </p>
 
-## 📌 Índice
+## Índice
 * [O que é o Docker e por que usamos?](#o-que-é-o-docker-e-por-que-usamos)
 * [O conceito de Container](#o-conceito-de-container)
 * [Docker vs. Máquinas Virtuais (VMs)](#docker-vs-máquinas-virtuais-vms)
@@ -15,13 +15,13 @@
 
 ---
 
-## 🧐 O que é o Docker e por que usamos?
+##  O que é o Docker e por que usamos?
 
 Para entender o Docker, precisamos entender o problema que ele resolveu. Antigamente, o maior pesadelo de um desenvolvedor era a frase: **"Mas na minha máquina funciona!"**. 
 
 Isso acontecia porque o ambiente de desenvolvimento era diferente do ambiente de produção (versões de bibliotecas, variáveis, SO). O Docker surgiu para "empacotar" sua aplicação e todas as suas dependências em uma unidade padronizada chamada **Container**.
 
-## 📦 O conceito de Container
+##  O conceito de Container
 
 Imagine um navio carregando diversos conteúdos: eletrônicos, café ou roupas. Quando o guindaste move esses containers, ele não precisa saber o que tem dentro, pois o **exterior é padronizado**. 
 
@@ -29,7 +29,7 @@ O Docker faz o mesmo com o software: ele garante que o sistema rode da mesma for
 
 ---
 
-## 🆚 Docker vs. Máquinas Virtuais (VMs)
+##  Docker vs. Máquinas Virtuais (VMs)
 
 Embora pareçam similares, são ferramentas diferentes para ocasiões diferentes. Veja a comparação:
 
@@ -44,23 +44,23 @@ Embora pareçam similares, são ferramentas diferentes para ocasiões diferentes
 
 ---
 
-## 🏗️ Como o Docker gerencia tudo isso?
+## Como o Docker gerencia tudo isso?
 
 O Docker trabalha baseado em **3 pilares principais** que você explorará neste laboratório:
 
-1.  **Imagens (O Projeto):** É o arquivo estático (somente leitura) que contém o código e as dependências. Pense nela como o "instalador" ou a "forma do bolo".
-2.  **Containers (A Instância):** É a imagem em execução. É o "bolo pronto". Você pode subir vários containers idênticos baseados na mesma imagem.
+1.  **Imagens (O Projeto):** É o arquivo estático (somente leitura) que contém o código e as dependências.
+2.  **Containers (A Instância):** É a imagem em execução. Você pode subir vários containers idênticos baseados na mesma imagem.
 3.  **Docker Compose (O Maestro):** Ferramenta para definir e rodar múltiplos containers. Em vez de comandos gigantes, usamos um arquivo `.yml` para orquestrar toda a sua infraestrutura.
 
 ---
 
-## 🚀 Configurações Iniciais
+##  Configurações Iniciais
 
 Antes de começarmos, você precisa do motor do Docker rodando em sua máquina.
 
 ### 1. Instalação
 Siga as instruções da documentação oficial para o seu sistema operacional:
-👉 [Documentação Oficial de Instalação](https://docs.docker.com/engine/install/)
+ [Documentação Oficial de Instalação](https://docs.docker.com/engine/install/)
 
 ### 2. Verificação
 Após instalar, abra seu terminal e digite:
@@ -69,16 +69,44 @@ docker --version
 docker compose version
 ```
 
-Com o docker e docker compose instalados, vamos dar continuidade ao nosso projeto.
+Com o docker e docker compose instalados, vamos dar continuidade.
 
-## 🛠️ Prática: Subindo seu primeiro serviço
+---
 
-Agora que você já entende a teoria, vamos colocar a mão na massa. Preparei um laboratório prático isolado para você aprender a subir um servidor Web.
+## Subindo seu primeiro serviço
 
-👉 **[Clique aqui para acessar o Laboratório Nginx](./nginx-service/README.md)**
+Agora que você já entende a teoria, vamos colocar a mão na massa. Preparei uma prática isolada para você aprender a subir um servidor Web simples.
+
+ **[Clique aqui para acessar os arquivos para o Nginx](./nginx-service/README.md)**
 
 Neste sub-diretório você encontrará:
 * O arquivo `docker-compose.yml` comentado.
 * O arquivo `index.html` para teste.
 * Um guia passo a passo de execução.
+
+----
+
+## Configurando um serviço DNS (AdGuard Home)
+
+### O que é DNS?
+
+O Domain Name System (DNS) é o serviço responsável por fazer a conversão do nome que você digita na internet (www.example.com) para algo que o computador consiga entender a sua requisição. Basicamente, cada dispositivo conectado à rede tem um endereço de IP único utilizado para interagirem entre si, e para que não precisemos decorar cada IP individualmente de cada site que acessamos, o serviço de DNS vem para nos ajudar a não ter todo esse trabalho.
+
+**[Mais Detalhes](https://www.cloudflare.com/pt-br/learning/dns/what-is-dns/)**
+
+### O que é o AdGuard Home?
+
+O **AdGuard Home** é um servidor DNS local de código aberto que atua como um bloqueador de anúncios e rastreamento para **toda a sua rede**. Ao rodá-lo em um container Docker, você garante que o serviço fique isolado, seja fácil de gerenciar e não interfira com outros programas do seu sistema.
+
+**[Clique aqui para acessar os arquivos para o AdGuard Home](./dns-service/README.md)**
+
+Neste sub-diretório você encontrará:
+* O arquivo `docker-compose.yml` comentado com a configuração de portas e volumes.
+* A pasta `/work` para dados operacionais (logs e estatísticas).
+* A pasta `/conf` para suas configurações e listas de filtros.
+* Um guia passo a passo de instalação e solução de problemas.
+
+**[Repositório Oficial AdGuard Home](https://github.com/AdguardTeam/AdGuardHome)**
+
+
 
