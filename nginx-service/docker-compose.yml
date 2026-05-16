@@ -1,8 +1,8 @@
 services:
   meu-servidor:
-    image: nginx:alpine          # Uma versão leve do servidor Nginx
-    container_name: aula-nginx
-    ports:
-      - "8080:80"                # Transforma a porta 80 interna na 8080 externa
-    volumes:
-      - ./index.html:/usr/share/nginx/html/index.html #Persistência
+    image: nginx:alpine          # É o molde do nosso container, que no caso é uma versão leve do servidor Nginx
+    container_name: aula-nginx   # É o nome do nosso container, facilita na identificação
+    ports:                       # É a ponte de comunicação 
+      - "8080:80"                # Transforma a porta 80 interna na 8080 externa [Porta do seu Dispositivo]:[Porta dentro do Container]
+    volumes:                     # O espelhamento de arquivos
+      - ./index.html:/usr/share/nginx/html/index.html #Persistência de dados [Host]:[Container]
