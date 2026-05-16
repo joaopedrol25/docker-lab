@@ -1,0 +1,19 @@
+services:
+  adguard:
+    image: adguard/adguardhome:latest
+    container_name: adguard
+    restart: unless-stopped
+
+    # Mapeamento de Portas
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"     # Porta padrão DNS: Essencial para os dispositivos acharem o servidor
+      - "3000:3000/tcp" # Interface de instalação - Primeiro acesso do AdGuard
+      - "8080:80/tcp"   # Painel Web (Porta 80 interna - 8080 externa)
+      - "443:443/tcp"   # DNS-over-HTTPS (DoH)(Opcional para segurança avançada)
+
+    # Persistência dos Dados
+    # Garante que seus filtros, senhas e configurações não sumam ao reiniciar
+    volumes:
+      - ./work:/opt/adguardhome/work
+      - ./conf:/opt/adguardhome/conf
