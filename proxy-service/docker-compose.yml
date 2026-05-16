@@ -1,0 +1,68 @@
+# ============================================================
+# docker-compose.yml — Nginx Proxy Reverso
+# ============================================================
+# Conceito: Um Proxy Reverso é o "porteiro" da infraestrutura.
+# Somente ele fica exposto para o host. Os backends vivem
+# isolados na rede interna e nunca são acessados diretamente.
+# ============================================================
+
+services:
+
+  # ────────────────────────────────────────────────────────
+  # SERVIÇO 1: nginx-proxy
+  # Ponto de entrada único de toda a infraestrutura.
+  # ────────────────────────────────────────────────────────
+  nginx-proxy:
+    image: nginx:alpine                        # Imagem oficial do Nginx, versão Alpine (leve e segura)
+    container_name: nginx-proxy                # Nome fixo para facilitar o gerenciamento via terminal
+    restart: unless-stopped                    # Reinicia automaticamente se cair; para apenas com 'docker compose down'
+
+    ports:
+      - "80:80"                                # HTTP  — única porta exposta para o host [Host]:[Container]
+      - "443:443"                              # HTTPS — porta para tráfego criptografado (TLS/SSL)
+
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Arquivo de config principal; ":ro" = somente leitura (segurança)
+      - ./conf.d:/etc/nginx/conf.d:ro          # Pasta com configs individuais por site ou serviço
+      - ./logs:/var/log/nginx                  # Pasta local para persistir os logs de acesso e erro
+
+    networks:
+      - proxy-network                          # Conecta o proxy à rede interna para falar com os backends
+
+    depends_on:
+      app-backend:
+        condition: service_healthy             # O proxy só sobe DEPOIS que o backend passar no healthcheck
+
+  # ────────────────────────────────────────────────────────
+  # SERVIÇO 2: app-backend
+  # Simula a aplicação que o proxy irá proteger e rotear.
+  # ────────────────────────────────────────────────────────
+  app-backend:
+    image: nginx:alpine                        # Usando Nginx como simulação de um servidor de aplicação
+    container_name: app-backend
+    restart: unless-stopped
+
+    volumes:
+      - ./html:/usr/share/nginx/html:ro        # Pasta com os arquivos da aplicação (HTML, assets, etc.)
+
+    expose:
+      - "80"                                   # Declara a porta 80 para os outros containers na rede,
+                                               # mas NÃO a abre para o host. Esse é o conceito central:
+                                               # o backend só é acessível internamente pelo proxy.
+
+    networks:
+      - proxy-network                          # Precisa estar na mesma rede do proxy para ser alcançável
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost"]  # Comando que verifica se o serviço está respondendo
+      interval: 30s                            # Intervalo entre cada verificação
+      timeout: 5s                              # Tempo máximo para o comando responder antes de falhar
+      retries: 3                              # Número de falhas seguidas para marcar o serviço como "unhealthy"
+      start_period: 10s                        # Tempo de carência na inicialização (ignora falhas neste período)
+
+# ────────────────────────────────────────────────────────
+# REDES
+# ────────────────────────────────────────────────────────
+networks:
+  proxy-network:
+    driver: bridge                             # Driver padrão: cria uma rede virtual isolada onde# containers se comunicam pelo nome do serviço (ex: "app-backend")
